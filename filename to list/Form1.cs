@@ -132,11 +132,11 @@ namespace filename_to_list
 
 
 
-            foreach (var voice in logs.Text.Split(
+            foreach (var log in logs.Text.Split(
                         new string[] { Environment.NewLine },
                         StringSplitOptions.None))
             {
-
+                sw.WriteLine(log);
                 curval++;
                 progressBar1.Value = curval;
             }
