@@ -10,7 +10,7 @@ Convert labels to list with filenames.
 
 ![image](https://user-images.githubusercontent.com/75120879/150434005-dee99594-8625-4777-b7ff-854342d44150.png)
 
-Output:
+Output: <br/>
 ![image](https://user-images.githubusercontent.com/75120879/150434925-dc8aa6cb-5be0-4bea-a1cf-fc267c168619.png)
 
 **Other things you need**
