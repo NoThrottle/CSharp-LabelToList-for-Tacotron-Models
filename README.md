@@ -22,7 +22,7 @@ Output: <br/>
 
 **Downloads**
 
-- Latest Release is found in the [Releases Page](https://github.com/NoThrottle/CommsBot/releases).
+- Latest Release is found in the [Releases Page](https://github.com/NoThrottle/CSharp-LabelToList-for-Tacotron-Models/releases).
 - This is the only website where I officially release updates and downloads. Since the code is open for anyone to use, there may be more versions of this made by other people. Their versions are fine but make sure you are not downloading malware.
 
 ## Contributing
