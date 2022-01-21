@@ -146,7 +146,9 @@
             this.Controls.Add(this.filepath);
             this.Controls.Add(this.inbrowse);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
             this.Name = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Filename to List";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
