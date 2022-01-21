@@ -37,11 +37,12 @@
             this.logs = new System.Windows.Forms.TextBox();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.start = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // inbrowse
             // 
-            this.inbrowse.Location = new System.Drawing.Point(248, 28);
+            this.inbrowse.Location = new System.Drawing.Point(248, 27);
             this.inbrowse.Name = "inbrowse";
             this.inbrowse.Size = new System.Drawing.Size(75, 23);
             this.inbrowse.TabIndex = 0;
@@ -58,7 +59,7 @@
             // 
             // outbrowse
             // 
-            this.outbrowse.Location = new System.Drawing.Point(248, 74);
+            this.outbrowse.Location = new System.Drawing.Point(248, 65);
             this.outbrowse.Name = "outbrowse";
             this.outbrowse.Size = new System.Drawing.Size(75, 23);
             this.outbrowse.TabIndex = 2;
@@ -68,7 +69,7 @@
             // 
             // outpath
             // 
-            this.outpath.Location = new System.Drawing.Point(13, 76);
+            this.outpath.Location = new System.Drawing.Point(13, 67);
             this.outpath.Name = "outpath";
             this.outpath.Size = new System.Drawing.Size(229, 20);
             this.outpath.TabIndex = 3;
@@ -76,7 +77,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(10, 60);
+            this.label1.Location = new System.Drawing.Point(10, 51);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(106, 13);
             this.label1.TabIndex = 4;
@@ -120,11 +121,21 @@
             this.start.UseVisualStyleBackColor = true;
             this.start.Click += new System.EventHandler(this.start_Click);
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(12, 100);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(78, 13);
+            this.label3.TabIndex = 9;
+            this.label3.Text = "Waiting for job:";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(335, 410);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.start);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.logs);
@@ -135,7 +146,9 @@
             this.Controls.Add(this.filepath);
             this.Controls.Add(this.inbrowse);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
             this.Name = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Filename to List";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
@@ -154,6 +167,7 @@
         public System.Windows.Forms.TextBox logs;
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.Button start;
+        private System.Windows.Forms.Label label3;
     }
 }
 
