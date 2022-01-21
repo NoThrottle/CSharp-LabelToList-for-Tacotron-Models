@@ -51,18 +51,20 @@ namespace filename_to_list
 
         private void ListOfFiles()
         {
+            progLabelChange("Choosing Files");
+
             FileInfo[] files = new DirectoryInfo(inpath).GetFiles().AsEnumerable().OrderBy(item => item.FullName, new NaturalSortComparer<string>()).ToArray();
-            progressBar1.Maximum = files.Length;
-            progressBar1.Value = 0;
+            maxValueChange(files.Length);
+            curValueChange(0);
 
             int i = 0;
             foreach (FileInfo file in files)
             {
-                Console.WriteLine(Path.Combine(file.Directory.ToString(), file.FullName));
+                ConsoleWriteLine(Path.Combine(file.Directory.ToString(), file.FullName));
 
                 string end = file.FullName.Substring(file.FullName.Length - extension.Length, extension.Length);
                 curval = i;
-                progressBar1.Value = curval;
+                curValueChange(curval);
 
                 if (end == extension)
                 {
@@ -82,31 +84,37 @@ namespace filename_to_list
 
         private void processfiles()
         {
-            Console.WriteLine("Processing Files");
+            ConsoleWriteLine("Processing Files");
+            progLabelChange("Processing Files");
 
-            progressBar1.Maximum = filestotrans.Count;
+
+            maxValueChange(filestotrans.Count);
+            curValueChange(0);
             curval = 0;
             int i = 0;
 
             foreach(string filesto in filestotrans)
             {
                 curval++;
-                Console.WriteLine("Processing: " + pathoffilestotrans[i]);
-                Console.WriteLine("To: " + Path.Combine(rawpathfilestotrans[i], i + "." + extension));
+                ConsoleWriteLine("Processing: " + pathoffilestotrans[i]);
+                ConsoleWriteLine("To: " + Path.Combine(rawpathfilestotrans[i], i + "." + extension));
                 System.IO.File.Move(pathoffilestotrans[i], Path.Combine(rawpathfilestotrans[i], i + "." + extension));
                 listadd(i, filestotrans[i]);
-                Console.WriteLine("Added to list: " + voiceline[i]);
-                progressBar1.Value = curval;
+                ConsoleWriteLine("Added to list: " + voiceline[i]);
+                curValueChange(curval);
                 i++;
             }
         }
 
         private void writelist()
         {
-            Console.WriteLine("Writing to File");
+            ConsoleWriteLine("Writing to File");
+            progLabelChange("Writing List");
+
             StreamWriter sw = new StreamWriter(Path.Combine(outend, "list.txt"));
 
-            progressBar1.Maximum = voiceline.Count;
+            maxValueChange(voiceline.Count);
+            curValueChange(0);
             curval = 0;
 
 
@@ -114,32 +122,32 @@ namespace filename_to_list
             {
                 
                 curval++;
-                progressBar1.Value = curval;
+                curValueChange(curval);
 
                 if (CheckForPeriods)
                 {
                     if (CheckLinesForPeriod(voice))
                     {
-                        Console.WriteLine(voice);
+                        ConsoleWriteLine(voice);
                         sw.WriteLine(voice);
                     }
                     else
                     {
                         DialogResult result = MessageBox.Show("Line:\r\n" 
                             + voice 
-                            + "\r\n Does not have a period in the end.\r\n Append period?", 
+                            + "\r\nDoes not have a period in the end.\r\nAppend period?", 
                             "Error", 
                             MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
                         if (DialogResult.Yes == result)
                         {
-                            Console.WriteLine("Appended period to line");
-                            Console.WriteLine(voice + ".");
+                            ConsoleWriteLine("Appended period to line");
+                            ConsoleWriteLine(voice + ".");
                             sw.WriteLine(voice + ".");
                         }
                         else
                         {
-                            Console.WriteLine("Breaking due to missing period.");
+                            ConsoleWriteLine("Breaking due to missing period.");
                             break;
                         }
 
@@ -147,7 +155,7 @@ namespace filename_to_list
                 }
                 else
                 {
-                    Console.WriteLine(voice);
+                    ConsoleWriteLine(voice);
                     sw.WriteLine(voice);
                 }                
             }
@@ -171,22 +179,33 @@ namespace filename_to_list
 
         private void writeLogs()
         {
-            Console.WriteLine("Writing Logs");
+            ConsoleWriteLine("Writing Logs");
+            progLabelChange("Writing Logs");
+
+
             StreamWriter sw = new StreamWriter(Path.Combine(outend, "logs." + DateTime.Now.ToFileTime() + ".txt"));
-            progressBar1.Maximum = logs.Text.Split(
+
+            string logstext = null;
+            label3.Invoke((MethodInvoker)delegate {
+                logstext = label3.Text;
+            });
+
+            maxValueChange(logstext.Split(
                         new string[] { Environment.NewLine },
-                        StringSplitOptions.None).Length;
+                        StringSplitOptions.None).Length);
+            curValueChange(0);
             curval = 0;
 
 
 
-            foreach (var log in logs.Text.Split(
+            foreach (var log in logstext.Split(
                         new string[] { Environment.NewLine },
                         StringSplitOptions.None))
             {
                 sw.WriteLine(log);
                 curval++;
-                progressBar1.Value = curval;
+                curValueChange(curval);
+                
             }
 
             sw.Close();
@@ -217,6 +236,38 @@ namespace filename_to_list
             outpath.Text = give.SelectedPath;
         }
 
+        #region ProgressBar and Logging
+
+        private void maxValueChange(int max)
+        {
+            progressBar1.Invoke((MethodInvoker)delegate {
+                progressBar1.Maximum = max;
+            });
+        }
+
+        private void curValueChange(int val)
+        {
+            progressBar1.Invoke((MethodInvoker)delegate {
+                progressBar1.Value = val;
+            });
+        }
+
+        private void progLabelChange(string text)
+        {
+            label3.Invoke((MethodInvoker)delegate {
+                label3.Text = text;
+            });
+        }
+
+        private void ConsoleWriteLine(Object text)
+        {
+            logs.Invoke((MethodInvoker)delegate {
+                logs.AppendText(DateTime.Now + ": " + text.ToString() + "\r\n");
+            });
+        }
+
+        #endregion
+
         private void start_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(outpath.Text) && string.IsNullOrEmpty(filepath.Text)) 
@@ -238,15 +289,38 @@ namespace filename_to_list
                 voiceline = new List<string>();
                 pathoffilestotrans = new List<string>();
 
-                Console.WriteLine("Initiated");
+                ConsoleWriteLine("Initiated");
 
                 inpath = filepath.Text;
                 outend = outpath.Text;
 
-                ListOfFiles();
-                processfiles();
-                writelist();
-                writeLogs();
+                Task.Run(() => {
+                    try
+                    {
+                        ListOfFiles();
+                        processfiles();
+                        writelist();
+                        writeLogs();
+                        ConsoleWriteLine("Finished");
+                        progLabelChange("Waiting for job:");
+
+                        start.Invoke((MethodInvoker)delegate {
+                            start.Enabled=true;
+                        });
+
+                    }
+                    catch (Exception ex)
+                    {
+                        ConsoleWriteLine(ex.ToString());
+
+                        progLabelChange("Waiting for job:");
+
+                        start.Invoke((MethodInvoker)delegate {
+                            start.Enabled = true;
+                        });
+                    }
+
+                });
             }
 
 
