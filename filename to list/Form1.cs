@@ -34,6 +34,7 @@ namespace filename_to_list
 
         //Edit These
         string extension = "wav"; //"wav" default
+        bool CheckForPeriods = true; //"true" default
 
         private void listadd(int i, string line)
         {
@@ -114,11 +115,53 @@ namespace filename_to_list
                 
                 curval++;
                 progressBar1.Value = curval;
-                Console.WriteLine(voice);
-                sw.WriteLine(voice);
+
+                if (CheckForPeriods)
+                {
+                    if (CheckLinesForPeriod(voice))
+                    {
+                        Console.WriteLine(voice);
+                        sw.WriteLine(voice);
+                    }
+                    else
+                    {
+                        DialogResult result = MessageBox.Show("", "", MessageBoxButtons.YesNo);
+                        if (DialogResult.Yes == result)
+                        {
+                            Console.WriteLine("Appended period to line");
+                            Console.WriteLine(voice + ".");
+                            sw.WriteLine(voice + ".");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Breaking due to missing period.");
+                            break;
+                        }
+
+                    }
+                }
+                else
+                {
+                    Console.WriteLine(voice);
+                    sw.WriteLine(voice);
+                }                
             }
 
             sw.Close();
+        }
+
+        private bool CheckLinesForPeriod(string line)
+        {
+
+            if (line.Substring(line.Length - 1, 1) == ".")
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+
+            }
         }
 
         private void writeLogs()
