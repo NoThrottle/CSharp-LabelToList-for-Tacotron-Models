@@ -58,7 +58,7 @@ namespace filename_to_list
             int i = 0;
             foreach (FileInfo file in files)
             {
-                Console.WriteLine(file.Directory.ToString());
+                Console.WriteLine(Path.Combine(file.Directory.ToString(), file.FullName));
 
                 string end = file.FullName.Substring(file.FullName.Length - extension.Length, extension.Length);
                 curval = i;
