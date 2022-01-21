@@ -125,7 +125,12 @@ namespace filename_to_list
                     }
                     else
                     {
-                        DialogResult result = MessageBox.Show("", "", MessageBoxButtons.YesNo);
+                        DialogResult result = MessageBox.Show("Line:\r\n" 
+                            + voice 
+                            + "\r\n Does not have a period in the end.\r\n Append period?", 
+                            "Error", 
+                            MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
                         if (DialogResult.Yes == result)
                         {
                             Console.WriteLine("Appended period to line");
@@ -221,6 +226,7 @@ namespace filename_to_list
             }
             else
             {
+                start.Enabled = false;
 
                 filestotrans = null;
                 rawpathfilestotrans = null;
